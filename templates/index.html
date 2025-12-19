@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Survey Generator</title>
+    <style>
+        /* 1. The Cyberpunk Foundation */
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --accent-cyan: #00f0ff;
+            --text-main: #c9d1d9;
+            --text-dim: #8b949e;
+            --glow: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        body { 
+            font-family: 'Courier New', Courier, monospace; /* Terminal vibe */
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            
+            /* This creates the grid pattern background */
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* 2. The Header & Nav */
+        .nav-bar {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-weight: bold;
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px var(--accent-cyan);
+        }
+
+        .nav-buttons button {
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 8px 16px;
+            margin-left: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        h1 {
+            color: var(--accent-cyan);
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: var(--glow);
+            text-align: center;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        /* 3. The Glowing Card */
+        .container { 
+            background: var(--card-bg); 
+            padding: 2rem; 
+            border-radius: 8px; 
+            border: 1px solid #30363d;
+            box-shadow: var(--glow); /* The outer glow */
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .card-title {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 5px white;
+        }
+
+        /* Input Styling */
+        input[type="text"] { 
+            width: 100%; 
+            padding: 15px; 
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: var(--text-main);
+            font-family: inherit;
+            border-radius: 6px;
+            box-sizing: border-box; /* Ensures padding doesn't break width */
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
+        }
+
+        /* The Generate Button */
+        .action-row {
+            display: flex;
+            justify-content: flex-end; /* Pushes button to the right */
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .btn-generate { 
+            padding: 12px 30px; 
+            background: var(--accent-cyan); 
+            color: #000; 
+            border: none; 
+            border-radius: 4px;
+            cursor: pointer; 
+            font-weight: bold;
+            font-family: inherit;
+            box-shadow: 0 0 15px var(--accent-cyan);
+            transition: transform 0.2s;
+        }
+
+        .btn-generate:hover { 
+            background: #fff;
+            transform: scale(1.05);
+        }
+
+        /* Results Area */
+        #results { margin-top: 30px; }
+
+        .question { 
+            background: rgba(0, 240, 255, 0.05); 
+            padding: 15px; 
+            margin-bottom: 10px; 
+            border-left: 3px solid var(--accent-cyan);
+            color: var(--text-main);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* New Styles for Options */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two columns */
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-label {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #30363d;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-label:hover {
+            background: rgba(0, 240, 255, 0.1);
+            border-color: var(--accent-cyan);
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+            accent-color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+
+
+    <h1>AI Survey Generator</h1>
+    <p class="subtitle">Quickly generate professional survey questions with AI</p>
+
+    <div class="container">
+        <div class="card-title">Generative Input_</div>
+        
+        <input type="text" id="topicInput" placeholder="Describe your survey topic (e.g., Customer Satisfaction for a Coffee Shop)...">
+        
+        <div class="action-row">
+            <button class="btn-generate" onclick="generateSurvey()">✨ Generate</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        async function generateSurvey() {
+            const topic = document.getElementById('topicInput').value;
+            const resultsDiv = document.getElementById('results');
+            const btn = document.querySelector('.btn-generate');
+            
+            resultsDiv.innerHTML = '<div style="color:var(--accent-cyan); text-align:center;">Processing Request...</div>';
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+
+            try {
+                const response = await fetch('/generate-survey', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ topic: topic })
+                });
+                
+                const data = await response.json();
+                const parsedData = JSON.parse(data.response);
+                
+                resultsDiv.innerHTML = '';
+
+                // Loop through each question object
+                parsedData.questions.forEach((item, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    
+                    // 1. Render the Question Text
+                    const title = document.createElement('div');
+                    title.innerHTML = `<span style="color:var(--accent-cyan); margin-right:10px;">0${index + 1}</span> ${item.text}`;
+                    questionDiv.appendChild(title);
+
+                    // 2. Render the Options
+                    const optionsContainer = document.createElement('div');
+                    optionsContainer.className = 'options-grid';
+
+                    item.options.forEach(opt => {
+                        const label = document.createElement('label');
+                        label.className = 'option-label';
+                        
+                        // We use name="q${index}" so users can only pick one option per question
+                        label.innerHTML = `
+                            <input type="radio" name="q${index}" value="${opt}">
+                            ${opt}
+                        `;
+                        optionsContainer.appendChild(label);
+                    });
+
+                    questionDiv.appendChild(optionsContainer);
+                    resultsDiv.appendChild(questionDiv);
+                });
+
+            } catch (error) {
+                resultsDiv.innerHTML = '<div style="color:red; text-align:center;">Error: ' + error.message + '</div>';
+            } finally {
+                btn.disabled = false;
+                btn.style.opacity = "1";
+            }
+        }
+    </script>
+</body>
+</html>
